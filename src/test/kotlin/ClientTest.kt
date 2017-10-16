@@ -12,8 +12,9 @@ class ClientTest {
         val client = ApiClient("http://httpbin.org/get", GsonSerializer())
 
         val value = client.get()
-        println(value)
         assertTrue(value.isNotEmpty())
+
+        println(value)
     }
 
     @Test
@@ -35,4 +36,6 @@ class ClientTest {
 
         println(value)
     }
+
+    private data class Dummy(val a: String, val b: Int)
 }

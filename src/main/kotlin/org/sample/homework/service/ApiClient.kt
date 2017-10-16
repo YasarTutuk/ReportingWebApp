@@ -8,25 +8,24 @@ import org.apache.http.impl.client.HttpClients
 import org.sample.homework.domain.HttpError
 import org.springframework.context.annotation.Scope
 import org.springframework.context.annotation.ScopedProxyMode
-//import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 @Service
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-class ApiClient constructor(val serializer: Serializer) : CommonClient {
+class ApiClient constructor(private var uri: String = "https://sandbox-reporting.rpdpymnt.com/api/v3") : CommonClient {
 
-    internal constructor(uri: String, serializer: Serializer) : this(serializer) {
+    internal constructor(uri: String, serializer: Serializer) : this() {
         this.uri = uri
+        this.serializer = serializer
     }
 
-//    @Autowired
-//    lateinit var serializer: Serializer
+    @Autowired
+    lateinit var serializer: Serializer
 
     private val client = HttpClients.createDefault()
-    private var uri: String = "https://sandbox-reporting.rpdpymnt.com/api/v3"
-
     private val headers = mutableMapOf("content-type" to "application/json")
     private val parameters = mutableMapOf<String, String>()
 
@@ -85,7 +84,7 @@ class ApiClient constructor(val serializer: Serializer) : CommonClient {
         httpResponse.use {
             val status = httpResponse.statusLine.statusCode
             val responseStr = BufferedReader(InputStreamReader(httpResponse.entity.content))
-                .readText()
+                    .readText()
 
             return if (status != 200) Pair(null, HttpError(status.toString(), responseStr))
             else Pair(serializer.deserialize(responseStr, type), null)

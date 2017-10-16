@@ -16,15 +16,15 @@ import java.time.LocalDateTime
 import javax.servlet.http.HttpSession
 
 @RestController
-class LoginController(val client: CommonClient){
+class LoginController(val client: CommonClient) {
 
     @Autowired
-    private lateinit var token : TokenStatus
+    private lateinit var token: TokenStatus
 //    val counter = AtomicLong()
 
     @GetMapping("/login")
     fun login(session: HttpSession, @RequestParam(value = "email", defaultValue = "demo@bumin.com.tr") email: String,
-              @RequestParam(value = "password", defaultValue = "cjaiU8CV") password: String) : ResponseEntity<Any> {
+              @RequestParam(value = "password", defaultValue = "cjaiU8CV") password: String): ResponseEntity<Any> {
 //        counter.incrementAndGet()
         client.endPoint = "/merchant/user/login"
 
@@ -38,7 +38,6 @@ class LoginController(val client: CommonClient){
             token.validTo = LocalDateTime.now().plusMinutes(10)
 
             ResponseEntity(response, HttpStatus.OK)
-        }
-        else ResponseEntity(error as Any, HttpStatus.OK)
+        } else ResponseEntity(error as Any, HttpStatus.OK)
     }
 }

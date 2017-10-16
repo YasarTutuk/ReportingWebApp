@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ClientController(val client: CommonClient) {
     @Autowired
-    private lateinit var token : TokenStatus
+    private lateinit var token: TokenStatus
 
     @GetMapping("/client")
-    fun client(@RequestParam(value = "transactionId", defaultValue = "1-1444392550-1") transactionId: String) : ResponseEntity<Any> {
+    fun client(@RequestParam(value = "transactionId", defaultValue = "1-1444392550-1") transactionId: String): ResponseEntity<Any> {
         client.endPoint = "/client"
         client.addHeader("Authorization", token.value)
 
